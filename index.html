@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Intro to Scala for Java Developers</title>
+
+  <meta name="description" content="Scala and Functional Programming can be scary at first for those of us coming from the OOP world. With a bunch of new concepts like immutability, first-class functions, implicits, and a ton of language features, it is easy to get overwhelmed when jumping into Scala. This session will provide a gentle introduction to Scala. You will learn the basics and walk away with a solid foundation to build on and be able to apply what you’ve learned to Java 8’s Lambdas.">
+  <meta name="author" content="James Ward">
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="css/reveal.min.css">
+  <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+  <!-- For syntax highlighting -->
+  <link rel="stylesheet" href="lib/css/zenburn.css">
+
+  <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+  <script>
+  document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+  </script>
+
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->
+
+  <style type="text/css">
+  .reveal .controls {
+    bottom: auto;
+    top: 0px;
+  }
+  </style>
+
+</head>
+
+<body>
+
+  <aside style="display: block; position: fixed; bottom: 5px; left: 10px; z-index: 30;">
+    <a href="http://salesforce.com"><img src="assets/salesforce_logo.png" height="60"></a>
+  </aside>
+
+  <aside style="display: block; position: fixed; bottom: 10px; right: 10px; z-index: 30;">
+    <a href="https://twitter.com/_JamesWard" class="twitter-follow-button" data-show-count="false" data-lang="en" data-size="large">Follow @_JamesWard</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  </aside>
+
+  <div class="reveal">
+
+    <div class="slides">
+
+      <section>
+        <h2>Intro to Scala for Java Developers</h2>
+        <p>
+          <small><a href="http://www.jamesward.com">James Ward</a> ~ <a href="http://twitter.com/_jamesward">@_JamesWard</a></small>
+        </p>
+      </section>
+
+      <section>
+        <h2>Why Scala</h2>
+
+        <ul>
+          <li class="fragment">Java++</li>
+          <li class="fragment">Reactive OOTB</li>
+          <li class="fragment">Expressive</li>
+          <li class="fragment">Functional + OO</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>My Journey</h2>
+
+        <ol>
+          <li class="fragment">The cool kids were doing it</li>
+          <li class="fragment">Java without semicolons</li>
+          <li class="fragment">Library ecosystem: Play Framework, Akka, Spark</li>
+          <li class="fragment">3+ years until "I get it"</li>
+          <li class="fragment">I still don't get the Haskell stuff</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Getting Started</h2>
+
+        <ol style="width: 90%">
+          <li>Download Activator: <a href="http://typesafe.com/platform/getstarted">typesafe.com/platform/getstarted</a></li>
+          <li>Extract &amp; launch Activator:<br/><pre><code>activator new</code></pre></li>
+          <li>Create a new app with the <em>minimal-scala</em> template</li>
+          <li>Run the app once: <pre><code>activator run</code></pre></li>
+          <li>Run the app continuously: <pre><code>activator ~run</code></pre></li>
+          <li>Launch the Scala REPL: <pre><code>activator console</code></pre></li>
+          <li>Run the tests continuously: <pre><code>activator ~test</code></pre></li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Dive in, Do Scala Right</h2>
+
+        <ul>
+          <li>Immutable</li>
+          <li>Type Inference</li>
+          <li>Functional</li>
+          <li>Expression-Oriented</li>
+          <li>Pattern Matching</li>
+          <li>No more NPEs</li>
+          <li>Syntactic Sugar</li>
+          <li>Reactive</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Hello, World</h2>
+
+        <p>
+          App (Hello.scala):
+          <pre><code>object Hello extends App {
+  println("hello, world")
+}</code></pre>
+        </p>
+
+        <p>
+          REPL:
+          <pre><code>scala> println("hello, world")</code></pre>
+        </p>
+      </section>
+
+      <section>
+        <h2>Immutable</h2>
+
+        <blockquote>Mutable state is the new spaghetti code</blockquote>
+
+        <br/>
+
+        <ul>
+          <li>Concurrency friendly</li>
+          <li>Flow is linear</li>
+        </ul>
+
+        <br/>
+
+        <pre><code>val foo: String = "asdf"</code></pre>
+      </section>
+
+      <section>
+        <h2>Type Inference</h2>
+
+        <p>Let the compiler figure out the types</p>
+        <pre><code>val foo = "asdf"
+val listOfInt = List(1,2,3)</code></pre>
+      </section>
+
+      <section>
+        <h2>Functional</h2>
+
+        <ul>
+          <li>Don't iterate &amp; mutate; Transform!</li>
+          <li>Define functions in any scope</li>
+          <li>Pass functions to other functions</li>
+        </ul>
+
+        <pre><code>val f = (s: String) => s.length</code></pre>
+        <pre><code>def stringLength(s: String): Int = s.length</code></pre>
+        <pre><code>List("asdf","zxc","q").map(stringLength)</code></pre>
+        <pre><code>List("asdf","zxc","q").map(s =&gt; s.length)</code></pre>
+        <pre><code>List("asdf","zxc","q").map(_.length)</code></pre>
+      </section>
+
+      <section>
+        <h2>Expression-Oriented</h2>
+
+        <ul>
+          <li>Expressions: Combination of symbols that represent a value</li>
+          <li><code>Unit</code> is a value</li>
+          <li>Very few "Statements" in Scala: <pre><code>class Foo</code></pre></li>
+          <li>No need for: <pre><code>return foo;</code></pre></li>
+        </ul>
+
+        <pre><code>val foo = if (true) "foo" else "bar"</code></pre>
+      </section>
+
+      <section>
+        <h2>Pattern Matching</h2>
+
+        <ul>
+          <li>Tons, and tons, and tons of features</li>
+          <li>Expressions that match on something</li>
+          <li>More technically: Partial Functions applied to any value</li>
+        </ul>
+
+        <pre><code>foo match {
+  case foo: Foo =&gt; println("foo")
+  case bar: Bar =&gt; println("bar")
+}</code></pre>
+
+        <pre><code>List(1, "asdf", false).collect {
+  case i: Int =&gt; "not a number"
+  case s: String =&gt; s.toUpperCase
+}</code></pre>
+      </section>
+
+      <section>
+        <h2>No More NPEs</h2>
+
+        <ul>
+          <li>Type system support for optional values</li>
+        </ul>
+
+        <pre><code>val maybeFoo = if (util.Random.nextBoolean()) Some("Foo") else None</code></pre>
+        <pre><code>maybeFoo.getOrElse("Bar")</code></pre>
+      </section>
+
+      <section>
+        <h2>Case Classes</h2>
+
+        <ul>
+          <li>Concise syntax for value objects</li>
+          <li>Built-in toString, equals, hash-code, extractor, creator, copy</li>
+        </ul>
+
+        <pre><code>case class Foo(name: String)
+val foo = new Foo("asdf")
+val foo = Foo.apply("asdf")
+val foo = Foo("asdf")
+val bar = foo.copy(name = "zxvc")</code></pre>
+      </section>
+
+      <section>
+        <h2>For Comprehensions</h2>
+
+        <pre><code>val m1 = Some("asdf")
+val m2 = None</code></pre>
+        <pre><code>m1.flatMap(mm1 =&gt; m2.map(mm2 =&gt; mm1 + mm2))</code></pre>
+        <pre><code>for {
+  mm1 &lt;- m1
+  mm2 &lt;- m2
+} yield mm1 + mm2</code></pre>
+      </section>
+
+      <section>
+        <h2>Reactive</h2>
+
+        <ul>
+          <li>Futures</li>
+          <li>Actors</li>
+          <li>Non-blocking IO</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Things I Stumbled On</h2>
+
+        <ul>
+          <li>Multiple Parameter Sets</li>
+          <li>Implicits</li>
+          <li>Up inference to Any</li>
+          <li>Objects / Companion Objects</li>
+          <li>Operators</li>
+          <li>Infix / arity-1</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Multiple Parameter Sets</h2>
+
+        <pre><code>def foo(s: String)(i: Int): String = s.substring(i)</code></pre>
+        <pre><code>foo("asdf")(1)</code></pre>
+        <pre><code>val f: (Int => String) = foo("asdf")(_)</code></pre>
+      </section>
+
+      <section>
+        <h2>Implicits</h2>
+
+        <blockquote>Fill in this value by finding something in scope that matches the type</blockquote>
+
+        <pre><code>def foo(s: String)(implicit i: Int): String = s.substring(i)
+implicit val i = 1
+foo("asdf")</code></pre>
+      </section>
+
+      <section>
+        <h2>Up inference to Any</h2>
+
+        <pre><code>val l = List(1, "asdf")</code></pre>
+      </section>
+
+      <section>
+        <h2>Objects / Companion Objects</h2>
+
+        <pre><code>object Foo {
+  val a = "asdf"
+}</code></pre>
+
+        <pre><code>class Foo {
+  val a = "zcxv"
+}</code></pre>
+
+        <pre><code>new Foo().a
+Foo.a</code></pre>
+      </section>
+
+      <section>
+        <h2>Operators</h2>
+
+        <pre><code>def >*#(s: String): String = s.toUpperCase</code></pre>
+        <pre><code>>*#("asdf")</code></pre>
+      </section>
+
+      <section>
+        <h2>Infix / arity-1</h2>
+
+        <pre><code>"asdf".substring(1)</code></pre>
+        <pre><code>"asdf" substring 1</code></pre>
+      </section>
+
+      <section>
+        <h2>Learn More</h2>
+
+        <ul>
+          <li><a href="https://www.coursera.org/course/progfun">Coursera Functional Programming</a></li>
+          <li><a href="http://danielwestheide.com/scala/neophytes.html">The Neophyte's Guide to Scala</a></li>
+          <li><a href="https://twitter.github.io/scala_school/">Twitter Scala School</a></li>
+        </ul>
+        <p><a href="http://www.atomicscala.com"><img src="http://www.atomicscala.com/wp-content/uploads/2012/07/Atomic_Scala_Social_Media_Icon.png"></a></p>
+      </section>
+
+  </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+  transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});
+
+</script>
+
+</body>
+</html>
